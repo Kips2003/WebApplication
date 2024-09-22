@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zzHXOYznBC4P4aZth5ymQ3VmL7JirIE2ISx9NJAsE9k0Xd0kBvRmKNus0kBQZLgYCjBFvAgE+BJDiN9EWzXKBg==",
+  "dgSpecHash": "qm1g0OH2KtAKFkm3/PANFvEE2qCOOuapitmMzVYvu4RR/mhnJkWNG1nphdqefTBE+FMEvg27SGGfYzt8VwaiUw==",
   "success": true,
-  "projectFilePath": "/home/kips20/Desktop/api_01.08/WebApi/WebApi/WebApi.csproj",
+  "projectFilePath": "/home/kips20/Documents/GitHub/WebApplication/WebApi/WebApi.csproj",
   "expectedPackageFiles": [
     "/home/kips20/.nuget/packages/azure.core/1.35.0/azure.core.1.35.0.nupkg.sha512",
     "/home/kips20/.nuget/packages/azure.identity/1.10.3/azure.identity.1.10.3.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/kips20/Desktop/api_01.08/WebApi/WebApi/WebApi.csproj": {}
+    "/home/kips20/Documents/GitHub/WebApplication/WebApi/WebApi.csproj": {}
   },
   "projects": {
-    "/home/kips20/Desktop/api_01.08/WebApi/WebApi/WebApi.csproj": {
+    "/home/kips20/Documents/GitHub/WebApplication/WebApi/WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/kips20/Desktop/api_01.08/WebApi/WebApi/WebApi.csproj",
+        "projectUniqueName": "/home/kips20/Documents/GitHub/WebApplication/WebApi/WebApi.csproj",
         "projectName": "WebApi",
-        "projectPath": "/home/kips20/Desktop/api_01.08/WebApi/WebApi/WebApi.csproj",
+        "projectPath": "/home/kips20/Documents/GitHub/WebApplication/WebApi/WebApi.csproj",
         "packagesPath": "/home/kips20/.nuget/packages/",
-        "outputPath": "/home/kips20/Desktop/api_01.08/WebApi/WebApi/obj/",
+        "outputPath": "/home/kips20/Documents/GitHub/WebApplication/WebApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/kips20/.nuget/NuGet/NuGet.Config"
