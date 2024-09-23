@@ -8,5 +8,5 @@ public interface IAuthService
     Task<AuthResponseDto> LogIn(UserLoginDto request);
     Task<UserDto> GetUserByEmailAsync(string email);
     Task<IEnumerable<UserDto>> GetUsersAsycn();
-    Task SendConfirmation(string email, string token);
+  //  Task SendConfirmation(string email, string token);
 }

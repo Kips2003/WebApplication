@@ -58,13 +58,13 @@ public class AuthService : IAuthService
             Email = request.Email,
             PhoneNumber = request.PhoneNumber,
             PasswordHash = _passwordHasher.HashPassword(request.Password),
-            IsEmailConfirmed = false,
-            EmailConfirmationToken = token
+           // IsEmailConfirmed = false,
+            //EmailConfirmationToken = token
         };
 
         await _userRepository.CreateUser(user);
 
-        await SendConfirmation(request.Email, token);
+//        await SendConfirmation(request.Email, token);
         
         return new AuthResponseDto { Success = true, Message = "User Registered Successfully" };
     }
@@ -120,7 +120,7 @@ public class AuthService : IAuthService
         });    
     }
 
-    public async Task SendConfirmation(string email, string token)
+    /*public async Task SendConfirmation(string email, string token)
     {
         var confirmationLink = $"https://gd-store.ge/confirm-email?token={token}";
         
@@ -128,5 +128,5 @@ public class AuthService : IAuthService
         {
             Host = ""
         }
-    }
+    }*/
 }
