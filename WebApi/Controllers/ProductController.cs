@@ -63,7 +63,7 @@ public class ProductController : ControllerBase
                 Price = request.Price,
                 Stock = request.Stock,
                 CategoryId = request.CategoryId,
-                Tags = request.Tags,
+                Tags = request.Title.Split(" "),
                 Weight = request.Weight,
                 Width = request.Width,
                 Depth = request.Depth,
@@ -108,7 +108,7 @@ public class ProductController : ControllerBase
             existingProduct.Price = request.Price;
             existingProduct.Stock = request.Stock;
             existingProduct.CategoryId = request.CategoryId;
-            existingProduct.Tags = request.Tags;
+            existingProduct.Tags = request.Title.Split(" ");
             existingProduct.Weight = request.Weight;
             existingProduct.Width = request.Width;
             existingProduct.Depth = request.Depth;

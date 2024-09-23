@@ -26,5 +26,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.CreatedAt)
             .HasColumnType("timestamp")
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
+        
+        builder.Property(u => u.IsEmailConfirmed)
+            .IsRequired() // Ensures this field cannot be null
+            .HasDefaultValue(false); 
     }
 }

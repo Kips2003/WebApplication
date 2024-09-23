@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApi.DTO;
+using WebApi.Models;
 using WebApi.Services.Authentication;
 
 namespace WebApi.Controllers;
@@ -33,7 +34,34 @@ public class AuthController : ControllerBase
 
         return Ok(user);
     }
-    
+    [HttpGet("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail(string token)
+    {
+        var pendingUser = await _authService.FindByEmailConfirmationTokenAsync(token);
+
+        if (pendingUser == null)
+        {
+            return BadRequest("Invalid token.");
+        }
+
+        // Create the user account
+        var user = new User
+        {
+            UserName = pendingUser.UserName,
+            FirstName = pendingUser.FirstName,
+            LastName = pendingUser.LastName,
+            Email = pendingUser.Email,
+            PhoneNumber = pendingUser.PhoneNumber,
+            PasswordHash = pendingUser.PasswordHash,
+            IsEmailConfirmed = true,
+        };
+
+        await _authService.UpdateUseAsync(user);
+
+        // Optionally, remove the pending user from storage
+
+        return Ok("Email confirmed and user account created successfully.");
+    }
     [HttpPost("register")]
     public async Task<IActionResult> Register(UserRegisterDto request)
     {

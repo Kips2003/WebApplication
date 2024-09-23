@@ -66,6 +66,16 @@ public class UserRepository : IUserRepository
         return false;
     }
 
+    public async Task<User> FindByEmailConfirmationTokenAsync(string token)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.EmailConfirmationToken == token);
+    }
+
+    public async Task UpdateUserAsync(User user)
+    {
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+    }
     public async Task<bool> EmptyRequiredField(User user)
     {
         /*if (user.UserName.IsNullOrEmpty() && user.FirstName.IsNullOrEmpty() && user.LastName.IsNullOrEmpty() &&

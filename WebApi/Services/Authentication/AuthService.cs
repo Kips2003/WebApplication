@@ -9,12 +9,14 @@ public class AuthService : IAuthService
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _token;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IEmailRepository _emailRepository;
 
-    public AuthService(IUserRepository userRepository, ITokenService token, IPasswordHasher passwordHasher)
+    public AuthService(IUserRepository userRepository, ITokenService token, IPasswordHasher passwordHasher, IEmailRepository emailRepository)
     {
         _userRepository = userRepository;
         _token = token;
         _passwordHasher = passwordHasher;
+        _emailRepository = emailRepository;
     }
     
     public async Task<AuthResponseDto> Register(UserRegisterDto request)
@@ -47,7 +49,8 @@ public class AuthService : IAuthService
             };
         }
 
-        var token = Guid.NewGuid().ToString();
+        var token = _emailRepository.GenerateEmailConfirmationToken();
+        _emailRepository.SendEmailConfirmationAsync(request.Email, token);
         
         var user = new User
         {
@@ -58,8 +61,8 @@ public class AuthService : IAuthService
             Email = request.Email,
             PhoneNumber = request.PhoneNumber,
             PasswordHash = _passwordHasher.HashPassword(request.Password),
-           // IsEmailConfirmed = false,
-            //EmailConfirmationToken = token
+            IsEmailConfirmed = false,
+            EmailConfirmationToken = token
         };
 
         await _userRepository.CreateUser(user);
@@ -103,6 +106,12 @@ public class AuthService : IAuthService
 
     }
 
+    public async Task UpdateUseAsync(User user)
+    {
+        await _userRepository.UpdateUserAsync(user);
+    }
+
+
     public async Task<IEnumerable<UserDto>> GetUsersAsycn()
     {
         var users = await _userRepository.GetUsers();
@@ -118,6 +127,11 @@ public class AuthService : IAuthService
             DateOfCreate = u.CreatedAt,
             DateOfBirth = u.BirthDate
         });    
+    }
+
+    public async Task<User> FindByEmailConfirmationTokenAsync(string token)
+    {
+        return await _userRepository.FindByEmailConfirmationTokenAsync(token);
     }
 
     /*public async Task SendConfirmation(string email, string token)

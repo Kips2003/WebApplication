@@ -290,3 +290,6 @@
 /home/kips20/Documents/GitHub/WebApplication/WebApi/obj/Debug/net8.0/WebApi.pdb
 /home/kips20/Documents/GitHub/WebApplication/WebApi/obj/Debug/net8.0/WebApi.genruntimeconfig.cache
 /home/kips20/Documents/GitHub/WebApplication/WebApi/obj/Debug/net8.0/ref/WebApi.dll
+/home/kips20/Documents/GitHub/WebApplication/WebApi/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
+/home/kips20/Documents/GitHub/WebApplication/WebApi/bin/Debug/net8.0/MailKit.dll
+/home/kips20/Documents/GitHub/WebApplication/WebApi/bin/Debug/net8.0/MimeKit.dll

@@ -1,13 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using WebApi.Configuration;
 using WebApi.Models;
+using System.Configuration;
 
 namespace WebApi.Data;
 
 public class DataContext : DbContext
 {
-    public DataContext(DbContextOptions<DataContext> options) : base(options)
+    private readonly IConfiguration _configuration;
+    public DataContext(DbContextOptions<DataContext> options, IConfiguration configuration) : base(options)
     {
+        _configuration = configuration;
     }
     
     public DbSet<User> Users { get; set; }
@@ -22,8 +25,9 @@ public class DataContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        
         var serverVersion = new MySqlServerVersion(new Version(8, 0, 22));
-        optionsBuilder.UseMySql("Data Source=127.0.0.1;Initial Catalog=forNewApi;User id=kips2003;Password=Elene_2003;",
+        optionsBuilder.UseMySql(_configuration.GetConnectionString("DefaultConnection"),
             serverVersion);
     }
 
