@@ -23,7 +23,7 @@ public class DataContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var serverVersion = new MySqlServerVersion(new Version(8, 0, 22));
-        optionsBuilder.UseMySql("Data Source=127.0.0.1;Initial Catalog=forNewApi;User id=root;Password=kips2003;",
+        optionsBuilder.UseMySql("Data Source=127.0.0.1;Initial Catalog=forNewApi;User id=kips2003;Password=Elene_2003;",
             serverVersion);
     }
 
