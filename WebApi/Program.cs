@@ -107,17 +107,19 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin")));
 
+//builder.WebHost.UseUrls("http://0.0.0.0:5134");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Production"))
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    app.UseSwaggerUI(/*c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API v1");
         c.RoutePrefix = string.Empty;
-    });
+    }*/);
 }
 
 app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
