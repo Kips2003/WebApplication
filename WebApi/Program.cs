@@ -57,6 +57,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 // Adding services to the controller
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
@@ -84,7 +85,14 @@ builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
 
 // Configuring JWT token here
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
+var keyString = builder.Configuration["Jwt:Key"];
+
+if (string.IsNullOrEmpty(keyString))
+{
+    throw new InvalidOperationException("JWT Key cannot be null or empty");
+}
+
+var key = Encoding.UTF8.GetBytes(keyString);
 
 builder.Services.AddAuthentication(options =>
     {
@@ -107,7 +115,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin")));
 
-//builder.WebHost.UseUrls("http://0.0.0.0:5134");
+builder.WebHost.UseUrls("http://0.0.0.0:5134");
 
 var app = builder.Build();
 

@@ -293,3 +293,4 @@
 /home/kips20/Documents/GitHub/WebApplication/WebApi/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
 /home/kips20/Documents/GitHub/WebApplication/WebApi/bin/Debug/net8.0/MailKit.dll
 /home/kips20/Documents/GitHub/WebApplication/WebApi/bin/Debug/net8.0/MimeKit.dll
+/home/kips20/Documents/GitHub/WebApplication/WebApi/bin/Debug/net8.0/Requests/http-client.env.json
