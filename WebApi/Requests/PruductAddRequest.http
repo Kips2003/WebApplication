@@ -1,5 +1,5 @@
 #    "categoryId": 1,   1: Kitchen, 2: Living Room, 3: Decoration, 4: Guest Room, 5: Dining Room, 6: Bed Room
-POST http://localhost:5134/api/Product
+POST http://gd-store.ge/api/Product
 Content-Type: application/json
 
 {
