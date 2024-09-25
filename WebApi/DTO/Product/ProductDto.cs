@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.ObjectModel;
 using Microsoft.VisualBasic;
 using WebApi.Models;
@@ -21,7 +22,7 @@ public class ProductDto
     public DateTime UpdatedAt { get; set; }
     public string QrCode { get; set; }
     public string BarCode { get; set; }
-    public int[] Reviews { get; set; }
+    public ICollection<Models.Reviews> Reviews { get; set; }
     public ICollection<string> Images { get; set; }
     public string Thumbnail { get; set; }
 }

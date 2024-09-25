@@ -166,13 +166,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasForeignKey(p => p.CategoryId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Property(p => p.Reviews)
-            .HasConversion(
-                v => string.Join(',', v), // Convert int[] to a comma-separated string
-                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(int.Parse) // Convert string back to int[]
-                    .ToArray())
-            .HasMaxLength(1000);
+        builder.HasMany(p => p.Reviews)
+            .WithOne(r => r.Product) // Assuming Review has a Product navigation property
+            .HasForeignKey(r => r.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
         // Indexes
         builder.HasIndex(p => p.BarCode).IsUnique();
         builder.HasIndex(p => p.QrCode).IsUnique();
