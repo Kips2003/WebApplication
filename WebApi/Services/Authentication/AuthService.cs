@@ -61,8 +61,8 @@ public class AuthService : IAuthService
             Email = request.Email,
             PhoneNumber = request.PhoneNumber,
             PasswordHash = _passwordHasher.HashPassword(request.Password),
-            IsEmailConfirmed = false,
-            EmailConfirmationToken = token
+           // IsEmailConfirmed = false,
+         //   EmailConfirmationToken = token
         };
 
         await _userRepository.CreateUser(user);
@@ -129,10 +129,12 @@ public class AuthService : IAuthService
         });    
     }
 
+    /*
     public async Task<User> FindByEmailConfirmationTokenAsync(string token)
     {
         return await _userRepository.FindByEmailConfirmationTokenAsync(token);
     }
+    */
 
     /*public async Task SendConfirmation(string email, string token)
     {

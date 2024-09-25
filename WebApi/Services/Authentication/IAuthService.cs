@@ -11,5 +11,5 @@ public interface IAuthService
     Task UpdateUseAsync(User user);
     Task<IEnumerable<UserDto>> GetUsersAsycn();
   //  Task SendConfirmation(string email, string token);
-   public Task<User> FindByEmailConfirmationTokenAsync(string token);
+   /*public Task<User> FindByEmailConfirmationTokenAsync(string token);*/
 }

@@ -12,6 +12,6 @@ public interface IUserRepository
     Task<bool> BadEmail(string email);
     Task<bool> BadPassword(string password);
     Task<bool> BadPhoneNumber(string phoneNumber);
-    public Task<User> FindByEmailConfirmationTokenAsync(string token);
+    /*public Task<User> FindByEmailConfirmationTokenAsync(string token);*/
     Task<bool> EmptyRequiredField(User user);
 }
