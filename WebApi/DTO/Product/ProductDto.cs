@@ -21,7 +21,7 @@ public class ProductDto
     public DateTime UpdatedAt { get; set; }
     public string QrCode { get; set; }
     public string BarCode { get; set; }
-    public ICollection<Reviews> Reviews { get; set; }
+    public int[] Reviews { get; set; }
     public ICollection<string> Images { get; set; }
     public string Thumbnail { get; set; }
 }

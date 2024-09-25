@@ -63,7 +63,7 @@ public class AuthController : ControllerBase
         return Ok("Email confirmed and user account created successfully.");
     }
     [HttpPost("register")]
-    public async Task<IActionResult> Register(UserRegisterDto request)
+    public async Task<IActionResult> Register([FromBody]UserRegisterDto request)
     {
         var response = await _authService.Register(request);
 
@@ -76,7 +76,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(UserLoginDto request)
+    public async Task<IActionResult> Login([FromBody] UserLoginDto request)
     {
         var response = await _authService.LogIn(request);
 

@@ -21,7 +21,7 @@ public class Product
     public decimal Width { get; set; }
     public decimal Depth { get; set; }
     public decimal Height { get; set; }
-    public ICollection<Reviews> Reviews { get; set; }
+    public int[] Reviews { get; set; }
     public ICollection<string> Images { get; set; }
     public string Thumbnail { get; set; }
     public DateTime CreatedAt { get; set; }

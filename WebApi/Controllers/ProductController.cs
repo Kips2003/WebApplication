@@ -26,7 +26,7 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("WithId/{id}")]
     public async Task<IActionResult> GetProductById(int id)
     {
         var product = _product.GetProductByIdAsync(id);
@@ -36,7 +36,7 @@ public class ProductController : ControllerBase
         return Ok(product);
     }
 
-    [HttpGet("{title}")]
+    [HttpGet("WithTitle/{title}")]
     public async Task<IActionResult> GetProductByTitle(string title)
     {
         var product = await _product.GetProductByTitleAsync(title);

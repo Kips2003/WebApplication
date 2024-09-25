@@ -14,5 +14,5 @@ public class Reviews
     public Product Product { get; set; }
     public int Rating { get; set; }
     public string Comment { get; set; }
-    public ICollection<string> Images { get; set; }
+    public string[] Images { get; set; }
 }

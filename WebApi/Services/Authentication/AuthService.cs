@@ -75,7 +75,7 @@ public class AuthService : IAuthService
     public async Task<AuthResponseDto> LogIn(UserLoginDto request)
     {
         var user = await _userRepository.GetUserByEmail(request.Email);
-        if (user is null || !_passwordHasher.VerifyPassword(user.PasswordHash, request.Password))
+        if (user == null || !_passwordHasher.VerifyPassword(user.PasswordHash, request.Password))
         {
             return new AuthResponseDto { Success = false, Message = "Invalid Email or Password" };
         }

@@ -36,9 +36,13 @@ public class ProductRepository : IProductRepository
             return new List<Models.Product>();
         }
 
-        return await _context.Products
-            .Where(p => p.Title.Contains(title, StringComparison.OrdinalIgnoreCase))
-            .ToListAsync();    
+        var lowerTitle = title.ToLower();
+
+        var products = await _context.Products
+            .Where(p => p.Title.ToLower().Contains(lowerTitle))
+            .ToListAsync();
+
+        return products;
     }
 
     public async Task<Models.Product> UpdateProductAsync(Models.Product product)
