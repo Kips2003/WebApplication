@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "UeygoCxc0XejljLAAF9NLTBEFOYCxdNmyWBrWNwms6pC3gvfRNBMetQ5bR+LaHO7WZK1WZd2JeoEV8GqRG97ZA==",
+  "dgSpecHash": "bSAnTuL3sx9Bt+oQLKixSlWS4jjkrEJPKwSzheriKN3YGITvcyDMRhg/p7EW8yeDAR+6U8QGrN2FCQ+sLzMpZQ==",
   "success": true,
   "projectFilePath": "/home/kips20/Documents/GitHub/WebApplication/WebApi/WebApi.csproj",
   "expectedPackageFiles": [
@@ -15,8 +15,8 @@
     "/home/kips20/.nuget/packages/microsoft.aspnetcore.http.abstractions/2.2.0/microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
     "/home/kips20/.nuget/packages/microsoft.aspnetcore.http.extensions/2.2.0/microsoft.aspnetcore.http.extensions.2.2.0.nupkg.sha512",
     "/home/kips20/.nuget/packages/microsoft.aspnetcore.http.features/2.2.0/microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
-    "/home/kips20/.nuget/packages/microsoft.aspnetcore.jsonpatch/8.0.7/microsoft.aspnetcore.jsonpatch.8.0.7.nupkg.sha512",
-    "/home/kips20/.nuget/packages/microsoft.aspnetcore.mvc.newtonsoftjson/8.0.7/microsoft.aspnetcore.mvc.newtonsoftjson.8.0.7.nupkg.sha512",
+    "/home/kips20/.nuget/packages/microsoft.aspnetcore.jsonpatch/8.0.8/microsoft.aspnetcore.jsonpatch.8.0.8.nupkg.sha512",
+    "/home/kips20/.nuget/packages/microsoft.aspnetcore.mvc.newtonsoftjson/8.0.8/microsoft.aspnetcore.mvc.newtonsoftjson.8.0.8.nupkg.sha512",
     "/home/kips20/.nuget/packages/microsoft.aspnetcore.openapi/8.0.7/microsoft.aspnetcore.openapi.8.0.7.nupkg.sha512",
     "/home/kips20/.nuget/packages/microsoft.bcl.asyncinterfaces/6.0.0/microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "/home/kips20/.nuget/packages/microsoft.codeanalysis.analyzers/3.3.3/microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",

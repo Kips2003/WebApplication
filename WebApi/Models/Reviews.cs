@@ -11,7 +11,6 @@ public class Reviews
     [ForeignKey("Product")] 
     public int ProductId { get; set; }
 
-    public Product Product { get; set; }
     public int Rating { get; set; }
     public string Comment { get; set; }
     public string[] Images { get; set; }

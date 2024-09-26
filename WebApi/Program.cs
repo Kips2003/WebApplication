@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApi.Data;
@@ -71,18 +72,20 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+     {
+         options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+         options.SerializerSettings.Formatting = Formatting.Indented; // Optional: for pretty print
+         // Add any additional settings you need here
+     });
 
 // Adding CORS
 builder.Services.AddCors(c =>
     c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
 // Adding JSON serialization
-builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
-        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
-    .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
-        = new DefaultContractResolver());
-
+    
 // Configuring JWT token here
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var keyString = builder.Configuration["Jwt:Key"];

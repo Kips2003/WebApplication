@@ -2,8 +2,8 @@ namespace WebApi.Services.Product;
 
 public interface IProductRepository
 {
-    Task<IEnumerable<Models.Product>> GetProductsAsync();
-    Task<Models.Product> GetProductByIdAsync(int id);
+    IEnumerable<Models.Product> GetProductsAsync();
+    Models.Product GetProductByIdAsync(int id);
     Task<Models.Product> CreateProductAsync(Models.Product product);
     Task<IEnumerable<Models.Product>> GetProductByTitleAsync(string title);
     Task<Models.Product> UpdateProductAsync(Models.Product product);

@@ -161,15 +161,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasMaxLength(1000); // Assuming a combined max length for images is 1000
 
         // Relationships
-        builder.HasOne(p => p.Category)
-            .WithMany(c => c.Products)  // Assuming Category has a collection of Products
-            .HasForeignKey(p => p.CategoryId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(p => p.Reviews)
-            .WithOne(r => r.Product) // Assuming Review has a Product navigation property
-            .HasForeignKey(r => r.ProductId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(p => p.CategoryId)
+            .IsRequired()
+            .HasMaxLength(255);
+        
         // Indexes
         builder.HasIndex(p => p.BarCode).IsUnique();
         builder.HasIndex(p => p.QrCode).IsUnique();

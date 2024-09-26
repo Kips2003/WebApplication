@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
+using WebApi.Models;
+using WebApi.DTO.Product;
 
 namespace WebApi.Services.Product;
 
@@ -12,14 +14,14 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
     
-    public async Task<IEnumerable<Models.Product>> GetProductsAsync()
+    public  IEnumerable<Models.Product> GetProductsAsync()
     {
-        return await _context.Products.ToListAsync();
+        return _context.Products.ToList();
     }
 
-    public async Task<Models.Product> GetProductByIdAsync(int id)
+    public  Models.Product GetProductByIdAsync(int id)
     {
-        return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+        return GetProductsAsync().FirstOrDefault(p => p.Id.Equals(id));
     }
 
     public async Task<Models.Product> CreateProductAsync(Models.Product product)

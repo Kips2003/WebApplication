@@ -14,7 +14,7 @@ public class ProductService : IProductService
     
     public async Task<IEnumerable<ProductDto>> GetProductsAsync()
     {
-        var products = await _productRepository.GetProductsAsync();
+        var products = _productRepository.GetProductsAsync();
         return products.Select(p => new ProductDto
         {
             Id = p.Id,
@@ -31,16 +31,14 @@ public class ProductService : IProductService
             Images = p.Images,
             Tags = p.Title.Split(" "),
             Thumbnail = p.Thumbnail,
-            CategoryId = p.CategoryId,
             Stock = p.Stock,
-            Reviews = p.Reviews,
             Weight = p.Weight
         }).ToList();
     }
 
     public async Task<ProductDto> GetProductByIdAsync(int id)
     {
-        var product = await _productRepository.GetProductByIdAsync(id);
+        var product = _productRepository.GetProductByIdAsync(id);
 
         if (product is null)
             return null;
@@ -63,7 +61,6 @@ public class ProductService : IProductService
             Thumbnail = product.Thumbnail,
             CategoryId = product.CategoryId,
             Stock = product.Stock,
-            Reviews = product.Reviews,
             Weight = product.Weight
         };
     }
@@ -86,7 +83,6 @@ public class ProductService : IProductService
             Thumbnail = product.Thumbnail,
             CategoryId = product.CategoryId,
             Stock = product.Stock,
-            Reviews = product.Reviews,
             Weight = product.Weight,
             CreatedAt = product.CreatedAt,
             UpdatedAt = product.UpdatedAt,
@@ -122,13 +118,12 @@ public class ProductService : IProductService
             Thumbnail = p.Thumbnail,
             CategoryId = p.CategoryId,
             Stock = p.Stock,
-            Reviews = p.Reviews,
             Weight = p.Weight
         }).ToList();    }
 
     public async Task<ProductDto> UpdateProductAsync(int id, ProductDto products)
     {
-        var product = await _productRepository.GetProductByIdAsync(id);
+        var product = _productRepository.GetProductByIdAsync(id);
         if (product is null)
             return null;
 
@@ -147,7 +142,6 @@ public class ProductService : IProductService
         product.Thumbnail = products.Thumbnail;
         product.CategoryId = products.CategoryId;
         product.Stock = products.Stock;
-        product.Reviews = products.Reviews;
         product.Weight = products.Weight;
 
         product = await _productRepository.UpdateProductAsync(product);
@@ -170,7 +164,6 @@ public class ProductService : IProductService
             Thumbnail = product.Thumbnail,
             CategoryId = product.CategoryId,
             Stock = product.Stock,
-            Reviews = product.Reviews,
             Weight = product.Weight
         };
     }

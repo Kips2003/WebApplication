@@ -9,7 +9,7 @@ public class ProductCreateDto
     public decimal Price { get; set; }
     public int CategoryId { get; set; }
     public int Stock { get; set; }
-   // public string[] Tags { get; set; }
+    public string[] Tags { get; set; }
     public decimal Weight { get; set; }
     public decimal Height { get; set; }
     public decimal Width { get; set; }
