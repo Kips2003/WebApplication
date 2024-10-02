@@ -33,7 +33,7 @@ public class ProductController : ControllerBase
         if (product is null)
             return NotFound();
 
-        return Ok(product);
+        return Ok(product.Result);
     }
 
     [HttpGet("WithTitle/{title}")]
