@@ -21,6 +21,7 @@ public class DataContext : DbContext
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<Product> Products { get; set; }    
     public DbSet<Address> Addresses { get; set; }
+    public DbSet<Reviews> Reviews { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -41,5 +42,6 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
         modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new ReviewsConfiguration());
     }
 }
