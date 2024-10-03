@@ -34,7 +34,7 @@ public class AuthController : ControllerBase
 
         return Ok(user);
     }
-    /*[HttpGet("confirm-email")]
+    [HttpGet("confirm-email")]
     public async Task<IActionResult> ConfirmEmail(string token)
     {
         var pendingUser = await _authService.FindByEmailConfirmationTokenAsync(token);
@@ -53,7 +53,7 @@ public class AuthController : ControllerBase
             Email = pendingUser.Email,
             PhoneNumber = pendingUser.PhoneNumber,
             PasswordHash = pendingUser.PasswordHash,
-           // IsEmailConfirmed = true,
+            IsEmailConfirmed = true,
         };
 
         await _authService.UpdateUseAsync(user);
@@ -61,7 +61,7 @@ public class AuthController : ControllerBase
         // Optionally, remove the pending user from storage
 
         return Ok("Email confirmed and user account created successfully.");
-    }*/
+    }
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody]UserRegisterDto request)
     {

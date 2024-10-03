@@ -66,10 +66,10 @@ public class UserRepository : IUserRepository
         return false;
     }
 
-    /*public async Task<User> FindByEmailConfirmationTokenAsync(string token)
+    public async Task<User> FindByEmailConfirmationTokenAsync(string token)
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.EmailConfirmationToken == token);
-    }*/
+    }
 
     public async Task UpdateUserAsync(User user)
     {

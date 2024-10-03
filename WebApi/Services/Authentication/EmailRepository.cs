@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using MimeKit;
 
 namespace WebApi.Services.Authentication;
@@ -14,7 +15,7 @@ public class EmailRepository : IEmailRepository
         _configuration = configuration;
     }
     
-    public async Task SendEmailConfirmationAsync(string email, string token)
+    public async Task SendEmailConfirmationAsync(string email,int confirmationCode)
     {
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("gd-store.ge",_configuration["Smtp:SenderEmail"]));
@@ -23,7 +24,7 @@ public class EmailRepository : IEmailRepository
         message.Body = new TextPart("plain")
         {
             Text =
-                $"Please confirm your email by clicking on the following link: https://gd-store.ge/confirm?token={token}"
+                $"Your confirmation code is: <b>{confirmationCode}</b>"
         };
 
         using var client = new SmtpClient();
@@ -37,5 +38,17 @@ public class EmailRepository : IEmailRepository
     public string GenerateEmailConfirmationToken()
     {
         return Guid.NewGuid().ToString();
+    }
+    
+    public int GenerateConfirmationCode()
+    {
+        // Generate a 6-digit random number for confirmation
+        using (var rng = new RNGCryptoServiceProvider())
+        {
+            byte[] randomNumber = new byte[4];
+            rng.GetBytes(randomNumber);
+            int result = BitConverter.ToInt32(randomNumber, 0);
+            return Math.Abs(result % 1000000);  // Ensure it's a 6-digit number
+        }
     }
 }

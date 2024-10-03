@@ -49,8 +49,9 @@ public class AuthService : IAuthService
             };
         }
 
+        var confirmationCode = _emailRepository.GenerateConfirmationCode();
         var token = _emailRepository.GenerateEmailConfirmationToken();
-        _emailRepository.SendEmailConfirmationAsync(request.Email, token);
+        _emailRepository.SendEmailConfirmationAsync(request.Email,confirmationCode);
         
         var user = new User
         {
@@ -61,13 +62,13 @@ public class AuthService : IAuthService
             Email = request.Email,
             PhoneNumber = request.PhoneNumber,
             PasswordHash = _passwordHasher.HashPassword(request.Password),
-           // IsEmailConfirmed = false,
-         //   EmailConfirmationToken = token
+            IsEmailConfirmed = false,
+            EmailConfirmationToken = token
         };
 
         await _userRepository.CreateUser(user);
 
-//        await SendConfirmation(request.Email, token);
+        //await SendConfirmation(request.Email, token);
         
         return new AuthResponseDto { Success = true, Message = "User Registered Successfully" };
     }
@@ -75,7 +76,19 @@ public class AuthService : IAuthService
     public async Task<AuthResponseDto> LogIn(UserLoginDto request)
     {
         var user = await _userRepository.GetUserByEmail(request.Email);
-        if (user == null || !_passwordHasher.VerifyPassword(user.PasswordHash, request.Password))
+        if (user == null)
+        {
+            return new AuthResponseDto
+            {
+                Success = false, Message = "Empty Filed"
+            };
+        }
+
+        if (!user.IsEmailConfirmed)
+        {
+            return new AuthResponseDto { Success = false, Message = "Email not confirmed" };
+        }
+        if (!_passwordHasher.VerifyPassword(user.PasswordHash, request.Password))
         {
             return new AuthResponseDto { Success = false, Message = "Invalid Email or Password" };
         }
@@ -129,20 +142,8 @@ public class AuthService : IAuthService
         });    
     }
 
-    /*
     public async Task<User> FindByEmailConfirmationTokenAsync(string token)
     {
         return await _userRepository.FindByEmailConfirmationTokenAsync(token);
     }
-    */
-
-    /*public async Task SendConfirmation(string email, string token)
-    {
-        var confirmationLink = $"https://gd-store.ge/confirm-email?token={token}";
-        
-        var smtpClient = new SmtpClient
-        {
-            Host = ""
-        }
-    }*/
 }

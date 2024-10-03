@@ -16,6 +16,6 @@ public class User
     public DateTime BirthDate { get; set; }
     public string PhoneNumber { get; set; }
     public ICollection<Reviews> Reviews { get; set; }
-//    public bool IsEmailConfirmed { get; set; }
-  //  public string EmailConfirmationToken { get; set; }
+    public bool IsEmailConfirmed { get; set; }
+    public string EmailConfirmationToken { get; set; }
 }

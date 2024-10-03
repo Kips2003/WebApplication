@@ -71,6 +71,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<EmailRepository>();
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
