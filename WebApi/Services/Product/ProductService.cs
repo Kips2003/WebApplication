@@ -79,7 +79,7 @@ public class ProductService : IProductService
             Description = product.Description,
             Price = product.Price,
             Images = product.Images,
-            Tags = product.Title.Split(" "),
+            Tags = product.Tags,
             Thumbnail = product.Thumbnail,
             CategoryId = product.CategoryId,
             Stock = product.Stock,
