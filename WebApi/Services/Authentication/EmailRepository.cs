@@ -86,8 +86,7 @@ public class EmailRepository : IEmailRepository
         
         message.Body = new TextPart("plain")
         {
-            Text =
-                $"Your confirmation link is: i"
+            Text = htmlContent
         };
 
         using var client = new SmtpClient();
