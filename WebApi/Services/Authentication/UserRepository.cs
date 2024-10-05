@@ -71,6 +71,16 @@ public class UserRepository : IUserRepository
         return await _context.Users.FirstOrDefaultAsync(u => u.EmailConfirmationToken == token);
     }
 
+    public async Task<bool> CheckForProfilePictureAsync(string picturePath)
+    {
+        string regex = @"^/image/";
+
+        if (Regex.IsMatch(picturePath, regex))
+            return true;
+
+        return false;
+    }
+
     public async Task UpdateUserAsync(User user)
     {
         _context.Users.Update(user);

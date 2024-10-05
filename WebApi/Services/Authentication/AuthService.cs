@@ -49,6 +49,11 @@ public class AuthService : IAuthService
             };
         }
 
+        if (!await _userRepository.CheckForProfilePictureAsync(request.ProfilePicture))
+        {
+            request.ProfilePicture = "/image/default-profile-picture.jpg";
+        }
+
         var confirmationCode = _emailRepository.GenerateConfirmationCode();
         var token = _emailRepository.GenerateEmailConfirmationToken();
         _emailRepository.SendEmailConfirmationAsync(request.Email,confirmationCode);
@@ -63,7 +68,8 @@ public class AuthService : IAuthService
             PhoneNumber = request.PhoneNumber,
             PasswordHash = _passwordHasher.HashPassword(request.Password),
             IsEmailConfirmed = false,
-            EmailConfirmationToken = token
+            EmailConfirmationToken = token,
+            ProfilePicture = request.ProfilePicture
         };
 
         await _userRepository.CreateUser(user);

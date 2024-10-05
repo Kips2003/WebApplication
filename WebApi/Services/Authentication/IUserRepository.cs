@@ -15,4 +15,5 @@ public interface IUserRepository
     /*public Task<User> FindByEmailConfirmationTokenAsync(string token);*/
     Task<bool> EmptyRequiredField(User user);
     public Task<User> FindByEmailConfirmationTokenAsync(string token);
+    Task<bool> CheckForProfilePictureAsync(string picturePath);
 }
