@@ -54,6 +54,7 @@ public class AuthController : ControllerBase
             PhoneNumber = pendingUser.PhoneNumber,
             PasswordHash = pendingUser.PasswordHash,
             IsEmailConfirmed = true,
+            EmailConfirmationToken = token
         };
 
         await _authService.UpdateUseAsync(user);

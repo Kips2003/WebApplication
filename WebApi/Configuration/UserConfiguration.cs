@@ -34,5 +34,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         /*builder.Property(u => u.IsEmailConfirmed)
             .IsRequired() // Ensures this field cannot be null
             .HasDefaultValue(false); */
+        builder.Property(u => u.ProfilePicture)
+            .HasMaxLength(200); 
     }
 }

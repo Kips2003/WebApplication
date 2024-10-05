@@ -114,7 +114,9 @@ public class AuthService : IAuthService
             PhoneNumber = user.PhoneNumber,
             PasswordHash = user.PasswordHash,
             DateOfCreate = user.CreatedAt,
-            DateOfBirth = user.BirthDate
+            DateOfBirth = user.BirthDate,
+            IsEmailConfirmed = user.IsEmailConfirmed,
+            EmailConfirmationToken = user.EmailConfirmationToken
         };
 
     }
@@ -138,7 +140,9 @@ public class AuthService : IAuthService
             Email = u.Email,
             PasswordHash = u.PasswordHash,
             DateOfCreate = u.CreatedAt,
-            DateOfBirth = u.BirthDate
+            DateOfBirth = u.BirthDate,
+            IsEmailConfirmed = u.IsEmailConfirmed,
+            EmailConfirmationToken = u.EmailConfirmationToken
         });    
     }
 

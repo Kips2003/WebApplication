@@ -18,4 +18,5 @@ public class User
     public ICollection<Reviews> Reviews { get; set; }
     public bool IsEmailConfirmed { get; set; }
     public string EmailConfirmationToken { get; set; }
+    public string ProfilePicture { get; set; }
 }
