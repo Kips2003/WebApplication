@@ -122,7 +122,8 @@ public class AuthService : IAuthService
             DateOfCreate = user.CreatedAt,
             DateOfBirth = user.BirthDate,
             IsEmailConfirmed = user.IsEmailConfirmed,
-            EmailConfirmationToken = user.EmailConfirmationToken
+            EmailConfirmationToken = user.EmailConfirmationToken,
+            ProfilePicture = user.ProfilePicture
         };
 
     }
@@ -148,7 +149,8 @@ public class AuthService : IAuthService
             DateOfCreate = u.CreatedAt,
             DateOfBirth = u.BirthDate,
             IsEmailConfirmed = u.IsEmailConfirmed,
-            EmailConfirmationToken = u.EmailConfirmationToken
+            EmailConfirmationToken = u.EmailConfirmationToken,
+            ProfilePicture = u.ProfilePicture
         });    
     }
 
