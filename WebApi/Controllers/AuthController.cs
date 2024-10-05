@@ -34,7 +34,7 @@ public class AuthController : ControllerBase
 
         return Ok(user);
     }
-    [HttpGet("confirm-email")]
+    [HttpGet("confirm-email/{token}")]
     public async Task<IActionResult> ConfirmEmail(string token)
     {
         var pendingUser = await _authService.FindByEmailConfirmationTokenAsync(token);
@@ -53,8 +53,10 @@ public class AuthController : ControllerBase
             Email = pendingUser.Email,
             PhoneNumber = pendingUser.PhoneNumber,
             PasswordHash = pendingUser.PasswordHash,
+            BirthDate = pendingUser.BirthDate,
             IsEmailConfirmed = true,
-            EmailConfirmationToken = token
+            EmailConfirmationToken = token,
+            ProfilePicture = pendingUser.ProfilePicture
         };
 
         await _authService.UpdateUseAsync(user);

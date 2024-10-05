@@ -67,7 +67,7 @@ public class EmailRepository : IEmailRepository
                 <div class='container'>
                     <h1>Email Confirmation</h1>
                     <p>Your confirmation link is:</p>
-                    <a href='https://gd-store.ge/confirm.html?token{token}'>Confirm your email</a>
+                    <a href='https://gd-store.ge/confirm.html?token={token}'>Confirm your email</a>
                 </div>
             </body>
             </html>";
