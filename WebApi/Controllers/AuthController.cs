@@ -37,6 +37,7 @@ public class AuthController : ControllerBase
     [HttpGet("confirm-email/{token}")]
     public async Task<IActionResult> ConfirmEmail(string token)
     {
+        // Find the user by the confirmation token
         var pendingUser = await _authService.FindByEmailConfirmationTokenAsync(token);
 
         if (pendingUser == null)
@@ -44,26 +45,13 @@ public class AuthController : ControllerBase
             return BadRequest("Invalid token.");
         }
 
-        // Create the user account
-        var user = new User
-        {
-            UserName = pendingUser.UserName,
-            FirstName = pendingUser.FirstName,
-            LastName = pendingUser.LastName,
-            Email = pendingUser.Email,
-            PhoneNumber = pendingUser.PhoneNumber,
-            PasswordHash = pendingUser.PasswordHash,
-            BirthDate = pendingUser.BirthDate,
-            IsEmailConfirmed = true,
-            EmailConfirmationToken = token,
-            ProfilePicture = pendingUser.ProfilePicture
-        };
+        // Update the existing user's properties
+        pendingUser.IsEmailConfirmed = true;
 
-        await _authService.UpdateUseAsync(user);
+        // Call the update method
+        await _authService.UpdateUseAsync(pendingUser);
 
-        // Optionally, remove the pending user from storage
-
-        return Ok("Email confirmed and user account created successfully.");
+        return Ok("Email confirmed and user account updated successfully.");
     }
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody]UserRegisterDto request)
