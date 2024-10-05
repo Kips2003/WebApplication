@@ -28,28 +28,28 @@ public class EmailRepository : IEmailRepository
             <html>
             <head>
                 <meta charset='utf-8'>
-                <link rel=""""preconnect"""" href=""""https://fonts.googleapis.com"""">
-                <link rel=""""preconnect"""" href=""""https://fonts.gstatic.com"""" crossorigin>
-                <link href=""""https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"""" rel=""""stylesheet"""">
+                <link rel=""preconnect"" href=""https://fonts.googleapis.com"">
+                <link rel=""preconnect"" href=""https://fonts.gstatic.com"" crossorigin>
+                <link href=""https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"" rel=""stylesheet"">
                 <title>Email Confirmation</title>
                 <style>
-                    body {{{{
-                        font-family: 'Inter';
+                    body {{
+                        font-family: Inter;
                         background-color: #f4f4f4;
                         padding: 20px;
-                    }}}}
-                    .container {{{{
+                    }}
+                    .container {{
                         max-width: 600px;
                         margin: auto;
                         background: white;
                         padding: 20px;
                         border-radius: 8px;
                         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                    }}}}
-                    h1 {{{{
+                    }}
+                    h1 {{
                         color: #333;
-                    }}}}
-                    a {{{{
+                    }}
+                    a {{
                         display: inline-block;
                         margin-top: 10px;
                         padding: 10px 15px;
@@ -57,34 +57,22 @@ public class EmailRepository : IEmailRepository
                         color: white;
                         text-decoration: none;
                         border-radius: 5px;
-                    }}}}
-                    a:hover {{{{
+                    }}
+                    a:hover {{
                         background-color: #0056b3;
-                    }}}}
-                    .link{{{{
-                        background-color: blue;
-                        width: 200px;
-                        height: 100px;
-                    }}}}
+                    }}
                 </style>
             </head>
             <body>
                 <div class='container'>
                     <h1>Email Confirmation</h1>
                     <p>Your confirmation link is:</p>
-                    <div class='link'>
-                        <a>Confirm your email</a>
-                    </div>
+                    <a href='https://gd-store.ge/confirm.html?token{token}'>Confirm your email</a>
                 </div>
-                <script>
-                    document.querySelector('.link').addEventListener('click', () => {{
-                        window.location.href = `https://gd-store.ge/confirm.html?token=${{token}};
-                    }})
-                </script>
             </body>
             </html>";
         
-        message.Body = new TextPart("plain")
+        message.Body = new TextPart("html")
         {
             Text = htmlContent
         };
