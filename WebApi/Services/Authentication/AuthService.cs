@@ -56,7 +56,7 @@ public class AuthService : IAuthService
 
         var confirmationCode = _emailRepository.GenerateConfirmationCode();
         var token = _emailRepository.GenerateEmailConfirmationToken();
-        _emailRepository.SendEmailConfirmationAsync(request.Email,confirmationCode);
+        _emailRepository.SendEmailConfirmationAsync(request.Email,token);
         
         var user = new User
         {
