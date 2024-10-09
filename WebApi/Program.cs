@@ -83,7 +83,7 @@ builder.Services.AddControllers()
 
 // Adding CORS
 builder.Services.AddCors(c =>
-    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+    c.AddPolicy("AllowOrigin", options => options.WithOrigins("https://gd-store.ge").AllowAnyHeader().AllowAnyMethod()));
 
 // Adding JSON serialization
     

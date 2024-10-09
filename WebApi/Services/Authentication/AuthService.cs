@@ -51,10 +51,9 @@ public class AuthService : IAuthService
 
         if (!await _userRepository.CheckForProfilePictureAsync(request.ProfilePicture))
         {
-            request.ProfilePicture = "/image/default-profile-picture.jpg";
+            request.ProfilePicture = "/images/default-profile-picture.jpg";
         }
 
-        var confirmationCode = _emailRepository.GenerateConfirmationCode();
         var token = _emailRepository.GenerateEmailConfirmationToken();
         _emailRepository.SendEmailConfirmationAsync(request.Email,token);
         

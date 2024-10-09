@@ -73,7 +73,7 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> CheckForProfilePictureAsync(string picturePath)
     {
-        string regex = @"^/image/";
+        string regex = @"^/images/";
 
         if (Regex.IsMatch(picturePath, regex))
             return true;
