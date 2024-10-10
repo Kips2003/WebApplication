@@ -100,11 +100,16 @@ namespace WebApi.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CartItems");
                 });
@@ -249,6 +254,9 @@ namespace WebApi.Migrations
                         .HasColumnType("timestamp")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Weight")
                         .HasColumnType("decimal(18,2)");
 
@@ -263,6 +271,8 @@ namespace WebApi.Migrations
                     b.HasIndex("QrCode")
                         .IsUnique();
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Products", (string)null);
                 });
 
@@ -276,13 +286,16 @@ namespace WebApi.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<string>("Images")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId1")
                         .HasColumnType("int");
 
                     b.Property<int>("Rating")
@@ -295,9 +308,11 @@ namespace WebApi.Migrations
 
                     b.HasIndex("ProductId");
 
+                    b.HasIndex("ProductId1");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("WebApi.Models.User", b =>
@@ -345,6 +360,9 @@ namespace WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("PrivilageId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ProfilePicture")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -363,7 +381,7 @@ namespace WebApi.Migrations
             modelBuilder.Entity("WebApi.Models.Address", b =>
                 {
                     b.HasOne("WebApi.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Addresses")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -396,15 +414,23 @@ namespace WebApi.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("WebApi.Models.User", "User")
+                        .WithMany("CartItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Cart");
 
                     b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WebApi.Models.Order", b =>
                 {
                     b.HasOne("WebApi.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -431,13 +457,28 @@ namespace WebApi.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("WebApi.Models.Product", b =>
+                {
+                    b.HasOne("WebApi.Models.User", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WebApi.Models.Reviews", b =>
                 {
                     b.HasOne("WebApi.Models.Product", null)
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("WebApi.Models.Product", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId1");
 
                     b.HasOne("WebApi.Models.User", "User")
                         .WithMany("Reviews")
@@ -465,6 +506,14 @@ namespace WebApi.Migrations
 
             modelBuilder.Entity("WebApi.Models.User", b =>
                 {
+                    b.Navigation("Addresses");
+
+                    b.Navigation("CartItems");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Products");
+
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

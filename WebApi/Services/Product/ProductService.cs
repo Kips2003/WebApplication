@@ -1,15 +1,20 @@
+using Microsoft.Identity.Client;
+using WebApi.DTO;
 using WebApi.DTO.Product;
 using WebApi.Models;
+using WebApi.Services.Authentication;
 
 namespace WebApi.Services.Product;
 
 public class ProductService : IProductService
 {
     private readonly IProductRepository _productRepository;
+    private readonly IUserRepository _userRepository;
 
-    public ProductService(IProductRepository productRepository)
+    public ProductService(IProductRepository productRepository, IUserRepository userRepository)
     {
         _productRepository = productRepository;
+        _userRepository = userRepository;
     }
     
     public async Task<IEnumerable<ProductDto>> GetProductsAsync()
@@ -32,7 +37,8 @@ public class ProductService : IProductService
             Tags = p.Title.Split(" "),
             Thumbnail = p.Thumbnail,
             Stock = p.Stock,
-            Weight = p.Weight
+            Weight = p.Weight,
+            UserId = p.UserId
         }).ToList();
     }
 
@@ -61,11 +67,12 @@ public class ProductService : IProductService
             Thumbnail = product.Thumbnail,
             CategoryId = product.CategoryId,
             Stock = product.Stock,
-            Weight = product.Weight
+            Weight = product.Weight,
+            UserId = product.UserId
         };
     }
 
-    public async Task<ProductDto> CreateProductAsync(Models.Product product)
+    public async Task<ProductDto> CreateProductAsync(int userId, Models.Product product)
     {
         product = await _productRepository.CreateProductAsync(product);
 
@@ -87,7 +94,8 @@ public class ProductService : IProductService
             CreatedAt = product.CreatedAt,
             UpdatedAt = product.UpdatedAt,
             QrCode = product.QrCode,
-            BarCode = product.BarCode
+            BarCode = product.BarCode,
+            UserId = userId
         };
     }
 
@@ -118,14 +126,25 @@ public class ProductService : IProductService
             Thumbnail = p.Thumbnail,
             CategoryId = p.CategoryId,
             Stock = p.Stock,
-            Weight = p.Weight
+            Weight = p.Weight,
+            UserId = p.UserId
         }).ToList();    }
 
-    public async Task<ProductDto> UpdateProductAsync(int id, ProductDto products)
+    public async Task<AuthResponseDto> UpdateProductAsync(int userId, ProductDto products)
     {
-        var product = _productRepository.GetProductByIdAsync(id);
+        var product = _productRepository.GetProductByIdAsync(products.Id);
         if (product is null)
-            return null;
+            return new AuthResponseDto { Success = false, Message = "This Product does not exist" };
+            
+        var user =await _userRepository.getUserById(userId);
+        if (user is null)
+            return new AuthResponseDto{Success = false, Message = "User does now exist"};
+
+        if (products.UserId != userId && user.PrivilageId != 1 && user.PrivilageId != 2)
+        {
+            return new AuthResponseDto { Success = false, Message = "You do not have access to change this address" };
+        }
+
 
         product.Title = products.Title;
         product.Height = products.Height;
@@ -144,32 +163,22 @@ public class ProductService : IProductService
         product.Stock = products.Stock;
         product.Weight = products.Weight;
 
-        product = await _productRepository.UpdateProductAsync(product);
+        await _productRepository.UpdateProductAsync(product);
 
-        return new ProductDto
-        {
-            Id = product.Id,
-            Title = product.Title,
-            Height = product.Height,
-            Width = product.Width,
-            Depth = product.Depth,
-            Description = product.Description,
-            Price = product.Price,
-            CreatedAt = product.CreatedAt,
-            UpdatedAt = product.UpdatedAt,
-            QrCode = product.QrCode,
-            BarCode = product.BarCode,
-            Images = product.Images,
-            Tags = product.Title.Split(" "),
-            Thumbnail = product.Thumbnail,
-            CategoryId = product.CategoryId,
-            Stock = product.Stock,
-            Weight = product.Weight
-        };
+        return new AuthResponseDto { Success = true, Message = "Product updated successfullu" };
     }
 
-    public async Task<bool> DeleteProductAsync(int id)
+    public async Task<AuthResponseDto> DeleteProductAsync(int id)
     {
-        return await _productRepository.DeleteProductAsync(id);
+        if (id == null)
+            return new AuthResponseDto { Success = false, Message = "Provided Number is null" };
+
+        var product = _productRepository.GetProductByIdAsync(id);
+        if (product is null)
+            return new AuthResponseDto { Success = false, Message = "There is no Address on this ID" };
+
+        await _productRepository.DeleteProductAsync(id);
+
+        return new AuthResponseDto { Success = true, Message = "Product removed from the database" };
     }
 }

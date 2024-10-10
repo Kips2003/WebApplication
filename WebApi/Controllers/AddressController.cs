@@ -33,24 +33,24 @@ public class AddressController : ControllerBase
         return CreatedAtAction(nameof(GetAddressById), new { Id = address.Id }, address);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAddress(int id, AddressCreateDto addressCreate)
+    [HttpPut("{userId}")]
+    public async Task<IActionResult> UpdateAddress(int userId, AddressDto addressCreate)
     {
-        var address = await _address.UpdateAddressAsync(id, addressCreate);
+        var address = await _address.UpdateAddressAsync(userId, addressCreate);
 
-        if (address is null)
-            return NotFound();
+        if (!address.Success)
+            return BadRequest(address.Message);
 
-        return Ok(address);
+        return Ok(address.Message);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAddress(int id)
+    [HttpDelete("{userId}/{id}")]
+    public async Task<IActionResult> DeleteAddress(int userId, int id)
     {
-        var result = await _address.DeleteAddressAsync(id);
-        if (!result)
-            return NotFound();
-
-        return NoContent();
+        var result = await _address.DeleteAddressAsync(userId, id);
+        if (!result.Success)
+            return BadRequest(result.Message);
+            
+        return Ok(result.Message);
     }
 }

@@ -47,7 +47,7 @@ public class ProductController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDto request)
+    public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDto request, int userId)
     {
         if (!ModelState.IsValid)
         {
@@ -76,7 +76,7 @@ public class ProductController : ControllerBase
                 UpdatedAt = DateTime.Now
             };
 
-            var createdProduct = await _product.CreateProductAsync(product);
+            var createdProduct = await _product.CreateProductAsync(userId, product);
             return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.Id }, createdProduct);
         }
         catch (Exception ex)
@@ -85,59 +85,23 @@ public class ProductController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProduct(int id, ProductCreateDto request)
+    [HttpPut("{userId}")]
+    public async Task<IActionResult> UpdateProduct(int userId, ProductDto request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        var product = await _product.UpdateProductAsync(userId, request);
 
-        try
-        {
-            // Retrieve the existing product
-            var existingProduct = await _product.GetProductByIdAsync(id);
-            if (existingProduct == null)
-            {
-                return NotFound($"Product with ID {id} not found.");
-            }
+        if (!product.Success)
+            return BadRequest(product.Message);
 
-            // Update the product fields
-            existingProduct.Title = request.Title;
-            existingProduct.Description = request.Description;
-            existingProduct.Price = request.Price;
-            existingProduct.Stock = request.Stock;
-            existingProduct.CategoryId = request.CategoryId;
-            existingProduct.Tags = request.Title.Split(" ");
-            existingProduct.Weight = request.Weight;
-            existingProduct.Width = request.Width;
-            existingProduct.Depth = request.Depth;
-            existingProduct.Height = request.Height;
-            existingProduct.Images = request.Images;
-            existingProduct.Thumbnail = request.Thumbnail;
-            existingProduct.BarCode = request.BarCode;
-            existingProduct.QrCode = request.QrCode;
-            
-            /*existingProduct.Meta.BarCode = request.Meta.BarCode;
-            existingProduct.Meta.QrCode = request.Meta.QrCode;
-            existingProduct.Meta.UpdatedAt = DateTime.UtcNow;*/ // Update timestamp
-
-            await _product.UpdateProductAsync(id, existingProduct);
-
-            return NoContent(); // 204 No Content for a successful update
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
-        }
+        return Ok(product.Message);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var success = await _product.DeleteProductAsync(id);
-        if (!success) return NotFound();
+        if (!success.Success) return BadRequest(success.Message);
 
-        return NoContent();
+        return Ok(success.Message);
     }
 }

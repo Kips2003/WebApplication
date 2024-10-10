@@ -53,6 +53,18 @@ public class AuthController : ControllerBase
 
         return Ok("Email confirmed and user account updated successfully.");
     }
+
+    [HttpGet("givePrivilege/{privilegeId}/{token}")]
+    public async Task<IActionResult> GivePrivilege(int privilegeId, string token)
+    {
+        var user = await _authService.FindByEmailConfirmationTokenAsync(token);
+
+        user.PrivilageId = privilegeId;
+
+        await _authService.UpdateUseAsync(user);
+
+        return Ok(User);
+    }
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody]UserRegisterDto request)
     {

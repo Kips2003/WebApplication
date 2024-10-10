@@ -4,5 +4,5 @@ public interface IEmailRepository
 {
     public string GenerateEmailConfirmationToken();
     public Task SendEmailConfirmationAsync(string email,string token);
-    public int GenerateConfirmationCode();
+    public Task GivePrivilegeToUser(string email, string token, string privilege);
 }

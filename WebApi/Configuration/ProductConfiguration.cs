@@ -168,5 +168,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         // Indexes
         builder.HasIndex(p => p.BarCode).IsUnique();
         builder.HasIndex(p => p.QrCode).IsUnique();
+        
+        builder.HasOne(a => a.User)
+            .WithMany() // Adjust this based on your desired inverse navigation property in User
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

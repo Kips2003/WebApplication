@@ -1,15 +1,19 @@
+using WebApi.DTO;
 using WebApi.DTO.Address;
 using WebApi.DTO.Product;
+using WebApi.Services.Authentication;
 
 namespace WebApi.Services.Address;
 
 public class AddressService : IAddressService
 {
     private readonly IAddressRepository _addressRepository;
+    private readonly IUserRepository _userRepository;
 
-    public AddressService(IAddressRepository addressRepository)
+    public AddressService(IAddressRepository addressRepository, IUserRepository userRepository)
     {
         _addressRepository = addressRepository;
+        _userRepository = userRepository;
     }
     
     public async Task<AddressDto> GetAddressByIdAsync(int id)
@@ -55,35 +59,53 @@ public class AddressService : IAddressService
             Street = address.Street
         };
     }
-
-    public async Task<AddressDto> UpdateAddressAsync(int id, AddressCreateDto addressDto)
+    
+    public async Task<AuthResponseDto> UpdateAddressAsync(int userId, AddressDto addressDto)
     {
-        var address = await _addressRepository.GetAddressByIdAsync(id);
+        var address = await _addressRepository.GetAddressByIdAsync(addressDto.Id);
         if (address is null)
-            return null;
+            return new AuthResponseDto{Success = false, Message = "This address does not exist"};
+        
+        var user = await _userRepository.getUserById(userId);
+        if (user is null)
+            return new AuthResponseDto{Success = false, Message = "User does now exist"};
 
-        address.UserId = addressDto.UserId;
+        if (addressDto.UserId != userId && user.PrivilageId != 1 && user.PrivilageId != 2)
+        {
+            return new AuthResponseDto { Success = false, Message = "You do not have access to change this address" };
+        }
+
         address.State = addressDto.State;
         address.City = addressDto.City;
         address.Street = addressDto.Street;
         address.PostalCode = addressDto.PostalCode;
         address.Country = addressDto.Country;
 
-        address = await _addressRepository.UpdateAddressAsync(address);
+        await _addressRepository.UpdateAddressAsync(address);
 
-        return new AddressDto
-        {
-            UserId = address.UserId,
-            State = address.State,
-            City = address.City,
-            Street = address.Street,
-            PostalCode = address.PostalCode,
-            Country = address.Country
-        };
+        return new AuthResponseDto() {Success = true, Message = "Address updated successfully"};
     }
 
-    public async Task<bool> DeleteAddressAsync(int id)
+    public async Task<AuthResponseDto> DeleteAddressAsync(int userId, int id)
     {
-        return await _addressRepository.DeleteAddressAsync(id);
+        if (id == null)
+            return new AuthResponseDto { Success = false, Message = "Provided Number is null" };
+
+        var address = await _addressRepository.GetAddressByIdAsync(id);
+        if (address is null)
+            return new AuthResponseDto { Success = false, Message = "There is no Address on this ID" };
+        
+        var user = await _userRepository.getUserById(userId);
+        if (user is null)
+            return new AuthResponseDto { Success = false, Message = "User does now exist" };
+        
+        if (address.UserId != userId && user.PrivilageId != 1 && user.PrivilageId != 2)
+        {
+            return new AuthResponseDto { Success = false, Message = "Youdo not have access to change this address" };
+        }
+        
+        await _addressRepository.DeleteAddressAsync(id);
+
+        return new AuthResponseDto { Success = true, Message = "Address Removed from the database" };
     }
 }

@@ -68,7 +68,8 @@ public class AuthService : IAuthService
             PasswordHash = _passwordHasher.HashPassword(request.Password),
             IsEmailConfirmed = false,
             EmailConfirmationToken = token,
-            ProfilePicture = request.ProfilePicture
+            ProfilePicture = request.ProfilePicture,
+            PrivilageId = 4
         };
 
         await _userRepository.CreateUser(user);

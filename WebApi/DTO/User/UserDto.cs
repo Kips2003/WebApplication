@@ -1,3 +1,5 @@
+using WebApi.Models;
+
 namespace WebApi.DTO;
 
 public class UserDto
@@ -14,4 +16,9 @@ public class UserDto
     public bool IsEmailConfirmed { get; set; }
     public string EmailConfirmationToken { get; set; }
     public string ProfilePicture { get; set; }
+
+    public ICollection<Models.Reviews> ReviewsCollection { get; set; }
+    public ICollection<Models.Address> Addresses { get; set; }
+    public ICollection<CartItem> CartItems { get; set; }
+    public ICollection<Models.Order> Orders { get; set; }
 }

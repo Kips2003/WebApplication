@@ -30,6 +30,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .WithOne(oi => oi.Order)
             .HasForeignKey(oi => oi.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
+
     }
 
 }

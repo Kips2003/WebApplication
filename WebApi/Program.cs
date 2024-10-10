@@ -13,6 +13,7 @@ using WebApi.Services.Cart;
 using WebApi.Services.Category;
 using WebApi.Services.Order;
 using WebApi.Services.Product;
+using WebApi.Services.Reviews;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +72,8 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IReviewsService, ReviewsService>();
+builder.Services.AddScoped<IReviewsRepository, ReviewsRepository>();
 builder.Services.AddTransient<EmailRepository>();
 
 builder.Services.AddControllers()
@@ -83,7 +86,7 @@ builder.Services.AddControllers()
 
 // Adding CORS
 builder.Services.AddCors(c =>
-    c.AddPolicy("AllowOrigin", options => options.WithOrigins("https://gd-store.ge").AllowAnyHeader().AllowAnyMethod()));
+    c.AddPolicy("AllowOrigin", options => options.WithOrigins().AllowAnyHeader().AllowAnyMethod()));
 
 // Adding JSON serialization
     

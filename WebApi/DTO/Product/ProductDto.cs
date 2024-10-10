@@ -17,4 +17,5 @@ public class ProductDto
     public DateTime UpdatedAt { get; set; }
     public string BarCode { get; set; }
     public string QrCode { get; set; }
+    public int UserId { get; set; }
 }

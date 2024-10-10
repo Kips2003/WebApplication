@@ -26,14 +26,72 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task<User> getUserById(int id)
+    {
+        var user = await _context.Users
+            .Include(u => u.Addresses)
+            .Include(u => u.Products)
+            .Include(u => u.CartItems)
+            .Include(u => u.Reviews)
+            .Include(u => u.Orders)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+        if (user == null)
+            return null;
+
+        return new User
+        {
+            Id = user.Id,
+            PrivilageId = user.PrivilageId,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            UserName = user.UserName,
+            Email = user.Email,
+            PasswordHash = user.PasswordHash,
+            CreatedAt = user.CreatedAt,
+            BirthDate = user.BirthDate,
+            PhoneNumber = user.PhoneNumber,
+            IsEmailConfirmed = user.IsEmailConfirmed,
+            EmailConfirmationToken = user.EmailConfirmationToken,
+            ProfilePicture = user.ProfilePicture,
+            Products = user.Products.ToList(),
+            Addresses = user.Addresses.ToList(),
+            CartItems = user.CartItems.ToList(),
+            Reviews = user.Reviews.ToList(),
+            Orders = user.Orders.ToList()
+        };    
+    }
+
     public async Task<User> GetUserByEmail(string email)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        var user = await _context.Users
+            .Include(u => u.Addresses)
+            .Include(u => u.Products)
+            .Include(u => u.CartItems)
+            .Include(u => u.Reviews)
+            .Include(u => u.Orders)
+            .FirstOrDefaultAsync(u => u.Email == email);
+
+        if (user == null)
+            return null;
+
+        return user;
+
+        /*return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);*/
     }
 
     public async Task<IEnumerable<User>> GetUsers()
     {
-        return await _context.Users.ToListAsync();
+        var users = await _context.Users
+            .Include(u => u.Addresses)
+            .Include(u => u.Products)
+            .Include(u => u.CartItems)
+            .Include(u => u.Reviews)
+            .Include(u => u.Orders)
+            .ToListAsync();
+
+        return users;
+        /*return await _context.Users.ToListAsync();*/
     }
 
     public async Task<bool> BadEmail(string email)
@@ -80,6 +138,7 @@ public class UserRepository : IUserRepository
 
         return false;
     }
+
 
     public async Task UpdateUserAsync(User user)
     {

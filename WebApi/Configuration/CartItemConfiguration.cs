@@ -26,6 +26,11 @@ public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
         // Configure properties
         builder.Property(ci => ci.Quantity)
             .IsRequired();
+        
+        builder.HasOne(a => a.User)
+            .WithMany() // Adjust this based on your desired inverse navigation property in User
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
 }

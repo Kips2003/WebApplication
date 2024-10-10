@@ -17,4 +17,5 @@ public class ProductCreateDto
     public string BarCode { get; set; }
     public string[] Images { get; set; }
     public string Thumbnail { get; set; }
+    public int UserId { get; set; }
 }
