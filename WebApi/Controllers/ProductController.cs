@@ -47,7 +47,7 @@ public class ProductController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDto request, int userId)
+    public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDto request)
     {
         if (!ModelState.IsValid)
         {
@@ -73,10 +73,11 @@ public class ProductController : ControllerBase
                 QrCode = request.QrCode,
                 BarCode = request.BarCode,
                 CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                UpdatedAt = DateTime.Now,
+                UserId = request.UserId
             };
 
-            var createdProduct = await _product.CreateProductAsync(userId, product);
+            var createdProduct = await _product.CreateProductAsync(request.UserId, product);
             return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.Id }, createdProduct);
         }
         catch (Exception ex)

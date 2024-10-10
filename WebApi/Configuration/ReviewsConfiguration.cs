@@ -21,8 +21,8 @@ public class ReviewsConfiguration : IEntityTypeConfiguration<Reviews>
             .OnDelete(DeleteBehavior.Cascade);
 
         // Foreign key configuration with Product entity
-        builder.HasOne<Product>()
-            .WithMany() // Assuming Product has no navigation property to Reviews
+        builder.HasOne(r => r.Product)
+            .WithMany(p => p.Reviews)
             .HasForeignKey(r => r.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 

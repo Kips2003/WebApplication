@@ -21,7 +21,6 @@ public class Product
     public decimal Width { get; set; }
     public decimal Depth { get; set; }
     public decimal Height { get; set; }
-    public ICollection<Reviews> Reviews { get; set; }
     public string[] Images { get; set; }
     public string Thumbnail { get; set; }
     public DateTime CreatedAt { get; set; }
@@ -31,4 +30,5 @@ public class Product
 
     public int UserId { get; set; }
     public User User { get; set; }
+    public ICollection<Reviews> Reviews { get; set; }
 }
