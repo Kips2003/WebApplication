@@ -123,7 +123,8 @@ public class AuthService : IAuthService
             DateOfBirth = user.BirthDate,
             IsEmailConfirmed = user.IsEmailConfirmed,
             EmailConfirmationToken = user.EmailConfirmationToken,
-            ProfilePicture = user.ProfilePicture
+            ProfilePicture = user.ProfilePicture,
+            PrevelageId = user.PrivilageId
         };
 
     }
@@ -150,7 +151,8 @@ public class AuthService : IAuthService
             DateOfBirth = u.BirthDate,
             IsEmailConfirmed = u.IsEmailConfirmed,
             EmailConfirmationToken = u.EmailConfirmationToken,
-            ProfilePicture = u.ProfilePicture
+            ProfilePicture = u.ProfilePicture,
+            PrevelageId = u.PrivilageId
         });    
     }
 
