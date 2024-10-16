@@ -23,7 +23,7 @@ public class AddressController : ControllerBase
 
         return Ok(addresses);
     }
-    [HttpGet("{id}")]
+    [HttpGet("byId/{id}")]
     public async Task<IActionResult> GetAddressById(int id)
     {
         var address = await _address.GetAddressesByIdAsync(id);
@@ -33,7 +33,7 @@ public class AddressController : ControllerBase
         return Ok(address);
     }
 
-    [HttpGet("{userId}")]
+    [HttpGet("byUserId/{userId}")]
     public async Task<IActionResult> GetAddressesByUserId(int userId)
     {
         var addresses = await _address.GetAddressBuUserIdAsync(userId);
