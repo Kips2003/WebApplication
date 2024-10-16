@@ -18,14 +18,15 @@ public class AddressRepository : IAddressRepository
         return await _context.Addresses.FindAsync(id);
     }
 
-    public IEnumerable<Models.Address> GetAddressesAsync()
+    public async Task<IEnumerable<Models.Address>> GetAddressesAsync()
     {
         return _context.Addresses.ToList();
     }
     public async Task<IEnumerable<Models.Address>> GetAddressByUserIdAsync(int userId)
     {
-        return GetAddressesAsync().Where(a => a.UserId == userId);
-    }
+        // Await the addresses list and filter the result using LINQ
+        var addresses = await GetAddressesAsync();
+        return addresses.Where(a => a.UserId == userId);    }
 
     public async Task<Models.Address> CreateAddressAsync(Models.Address address)
     {
