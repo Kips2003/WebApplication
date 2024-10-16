@@ -51,7 +51,8 @@ public class AddressService : IAddressService
             Country = a.Country,
             PostalCode = a.PostalCode,
             UserId = a.UserId
-        }).ToList();    }
+        }).ToList();
+    }
 
     public async Task<AddressDto> GetAddressesByIdAsync(int id)
     {

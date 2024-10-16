@@ -25,8 +25,9 @@ public class AddressRepository : IAddressRepository
     public async Task<IEnumerable<Models.Address>> GetAddressByUserIdAsync(int userId)
     {
         // Await the addresses list and filter the result using LINQ
-        var addresses = await GetAddressesAsync();
-        return addresses.Where(a => a.UserId == userId);    }
+        var addresses = await _context.Addresses.Where(a => a.UserId == userId).ToListAsync();
+        return addresses;    
+    }
 
     public async Task<Models.Address> CreateAddressAsync(Models.Address address)
     {
