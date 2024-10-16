@@ -24,16 +24,7 @@ public class AddressRepository : IAddressRepository
     }
     public async Task<IEnumerable<Models.Address>> GetAddressByUserIdAsync(int userId)
     {
-        return await _context.Addresses.Select(a => new Models.Address
-        {
-            Id = a.Id,
-            Street = a.Street,
-            City = a.City,
-            State = a.State,
-            Country = a.Country,
-            PostalCode = a.Country,
-            UserId = a.UserId
-        }).Where(a => a.UserId == userId).ToListAsync();
+        return await _context.Addresses.Where(a => a.UserId == userId).ToListAsync();
     }
 
     public async Task<Models.Address> CreateAddressAsync(Models.Address address)
