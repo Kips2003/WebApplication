@@ -18,7 +18,7 @@ public class AddressService : IAddressService
 
     public async Task<IEnumerable<AddressDto>> GetAddressesAsync()
     {
-        var addresses = _addressRepository.GetAddressesAsync();
+        var addresses =await _addressRepository.GetAddressesAsync();
 
         return addresses.Select(a => new AddressDto
         {
