@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
+using WebApi.DTO.Address;
 
 namespace WebApi.Services.Address;
 
@@ -15,6 +16,24 @@ public class AddressRepository : IAddressRepository
     public async Task<Models.Address> GetAddressByIdAsync(int id)
     {
         return await _context.Addresses.FindAsync(id);
+    }
+
+    public IEnumerable<Models.Address> GetAddressesAsync()
+    {
+        return _context.Addresses.ToList();
+    }
+    public async Task<IEnumerable<Models.Address>> GetAddressByUserIdAsync(int userId)
+    {
+        return await _context.Addresses.Select(a => new Models.Address
+        {
+            Id = a.Id,
+            Street = a.Street,
+            City = a.City,
+            State = a.State,
+            Country = a.Country,
+            PostalCode = a.Country,
+            UserId = a.UserId
+        }).Where(a => a.UserId == userId).ToListAsync();
     }
 
     public async Task<Models.Address> CreateAddressAsync(Models.Address address)

@@ -16,16 +16,31 @@ public class AddressController : ControllerBase
         _address = address;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAddresses()
+    {
+        var addresses = await _address.GetAddressesAsync();
+
+        return Ok(addresses);
+    }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAddressById(int id)
     {
-        var address = await _address.GetAddressByIdAsync(id);
+        var address = await _address.GetAddressesByIdAsync(id);
         if (address is null)
             return NotFound();
 
         return Ok(address);
     }
 
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetAddressesByUserId(int userId)
+    {
+        var addresses = await _address.GetAddressBuUserIdAsync(userId);
+
+        return Ok(addresses);
+    }
+    
     [HttpPost]
     public async Task<IActionResult> CreateAddress(AddressCreateDto cartCreate)
     {

@@ -42,6 +42,28 @@ public class OrderController : ControllerBase
         return Ok(order);
     }
 
+    [HttpPut("add/{id}")]
+    public async Task<IActionResult> AddProgress(int id)
+    {
+        var order = await _order.GetOrderByIdAsync(id);
+        if (order is null)
+            return NotFound();
+
+        order = await _order.AddProgressAsync(id);
+        return Ok(order);
+    }
+    
+    [HttpPut("remove/{id}")]
+    public async Task<IActionResult> RemoveProgress(int id)
+    {
+        var order = await _order.GetOrderByIdAsync(id);
+        if (order is null)
+            return NotFound();
+
+        order = await _order.RemoveProgressAsync(id);
+        return Ok(order);
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteOrder(int id)
     {

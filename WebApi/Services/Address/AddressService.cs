@@ -15,8 +15,45 @@ public class AddressService : IAddressService
         _addressRepository = addressRepository;
         _userRepository = userRepository;
     }
-    
-    public async Task<AddressDto> GetAddressByIdAsync(int id)
+
+    public async Task<IEnumerable<AddressDto>> GetAddressesAsync()
+    {
+        var addresses = _addressRepository.GetAddressesAsync();
+
+        return addresses.Select(a => new AddressDto
+        {
+            Id = a.Id,
+            State = a.State,
+            Street = a.Street,
+            City = a.City,
+            PostalCode = a.PostalCode,
+            Country = a.Country,
+            UserId = a.UserId
+        }).ToList();
+    }
+
+    public async Task<IEnumerable<AddressDto>> GetAddressBuUserIdAsync(int userId)
+    {
+        var user = _userRepository.getUserById(userId);
+        if (user is null)
+            return null;
+
+        var addresses = await _addressRepository.GetAddressByUserIdAsync(userId);
+        if (addresses is null)
+            return null;
+
+        return addresses.Select(a => new AddressDto
+        {
+            Id = a.Id,
+            Street = a.Street,
+            State = a.State,
+            City = a.City,
+            Country = a.Country,
+            PostalCode = a.PostalCode,
+            UserId = a.UserId
+        }).ToList();    }
+
+    public async Task<AddressDto> GetAddressesByIdAsync(int id)
     {
         var address = await _addressRepository.GetAddressByIdAsync(id);
         if (address is null)
@@ -31,8 +68,9 @@ public class AddressService : IAddressService
             State = address.State,
             PostalCode = address.PostalCode,
             Country = address.Country
-        };
-    }
+        };    }
+    
+
 
     public async Task<AddressDto> CreateAddressByIdAsync(AddressCreateDto addressDto)
     {

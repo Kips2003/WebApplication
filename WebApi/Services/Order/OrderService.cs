@@ -106,6 +106,61 @@ public class OrderService : IOrderService
         };
     }
 
+    public async Task<OrderDto> AddProgressAsync(int id)
+    {
+        var order = await _order.GetOrderBuIdAsync(id);
+
+        if (order is null)
+            return null;
+
+        order.OrderProgressId++;
+        
+        order = await _order.UpdateOrderAsync(order);
+
+        return new OrderDto
+        {
+            Id = order.Id,
+            UserId = order.UserId,
+            OrderDate = order.OrderDate,
+            TotalAmount = order.TotalAmount,
+            OrderItems = order.OrderItems.Select(oi => new OrderItemDto
+            {
+                Id = oi.Id,
+                OrderId = oi.OrderId,
+                ProductId = oi.ProductId,
+                Quantity = oi.Quantity,
+                UnitPrice = oi.UnitPrice
+            }).ToList(),
+            OrderProgressId = order.OrderProgressId
+        };
+    }
+
+    public async Task<OrderDto> RemoveProgressAsync(int id)
+    {
+        var order = await _order.GetOrderBuIdAsync(id);
+
+        order.OrderProgressId--;
+        
+        order = await _order.UpdateOrderAsync(order);
+
+        return new OrderDto
+        {
+            Id = order.Id,
+            UserId = order.UserId,
+            OrderDate = order.OrderDate,
+            TotalAmount = order.TotalAmount,
+            OrderItems = order.OrderItems.Select(oi => new OrderItemDto
+            {
+                Id = oi.Id,
+                OrderId = oi.OrderId,
+                ProductId = oi.ProductId,
+                Quantity = oi.Quantity,
+                UnitPrice = oi.UnitPrice
+            }).ToList(),
+            OrderProgressId = order.OrderProgressId
+        };    
+    }
+
     public async Task<bool> DeleteOrderAsync(int id)
     {
         return await _order.DeleteOrderAsync(id);
