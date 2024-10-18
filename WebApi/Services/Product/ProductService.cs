@@ -172,7 +172,7 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<ProductDto>> GetProductByQueryAsync(ProductSearchDto searchDto)
     {
-        var products = await GetProductByQueryAsync(searchDto);
+        var products = await _productRepository.GetProductsByQueryAsync(searchDto);
         
         return products.Select(p => new ProductDto
         {

@@ -46,9 +46,17 @@ public class ProductController : ControllerBase
         return Ok(product);
     }
 
-    [HttpGet("WithQuery/")]
-    public async Task<IActionResult> GetProductByQueryAsync(ProductSearchDto query)
+    [HttpGet("search")]
+    public async Task<IActionResult> GetProductByQueryAsync([FromQuery] string? title, [FromQuery] int? category, [FromQuery] int? minPrice, [FromQuery] int? maxPrice)
     {
+        var query = new ProductSearchDto
+        {
+            title = title,
+            CategoryId = category,
+            MinPrice = minPrice,
+            MaxPrice = maxPrice
+        };
+    
         var products = await _product.GetProductByQueryAsync(query);
         if (products is null)
             return NotFound();
