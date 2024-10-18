@@ -46,6 +46,60 @@ public class ProductRepository : IProductRepository
 
         return products;
     }
+
+    public async Task<IEnumerable<Models.Product>> GetProductsByQueryAsync(ProductSearchDto search)
+    {
+        if (search.title is null && search.CategoryId is null && search.MaxPrice is null && search.MinPrice is null)
+        {
+            return GetProductsAsync();
+        }
+        if (search.CategoryId is null && search.MaxPrice is null && search.MinPrice is null)
+        {
+            return await GetProductByTitleAsync(search.title);
+        }
+        if (search.title is null && search.MaxPrice is null && search.MinPrice is null)
+        {
+            return await GetProductByCategoryIdAsync(search.CategoryId);
+        }
+
+        if ((search.title is null && search.CategoryId is null && search.MinPrice is null) 
+            || (search.title is null && search.CategoryId is null && search.MinPrice is null)
+            || (search.title is null && search.CategoryId is null))
+        {
+            return await GetProductByPriceRangeAsync(search.MinPrice, search.MaxPrice);
+        }
+
+        if (search.MaxPrice is null && search.MinPrice is null)
+        {
+            var productsByTitle = await GetProductByTitleAsync(search.title);
+            var productsByCategory = await GetProductByCategoryIdAsync(search.CategoryId);
+
+            return await GetProductByFilterSectionAsync(productsByCategory, productsByCategory);
+        }
+
+        if ((search.title is null && search.MaxPrice is null) || (search.title is null && search.MinPrice is null) || (search.title is null))
+        {
+            var productByCategory = await GetProductByCategoryIdAsync(search.CategoryId);
+            var productByPrice = await GetProductByPriceRangeAsync(search.MinPrice, search.MaxPrice);
+
+            return await GetProductByFilterSectionAsync(productByCategory, productByPrice);
+        }
+        if ((search.CategoryId is null && search.MaxPrice is null) || (search.CategoryId is null && search.MinPrice is null) || (search.CategoryId is null))
+        {
+            var productByTitleAsync = await GetProductByTitleAsync(search.title);
+            var productByPrice = await GetProductByPriceRangeAsync(search.MinPrice, search.MaxPrice);
+
+            return await GetProductByFilterSectionAsync(productByTitleAsync, productByPrice);
+        }
+
+        var productByTitle = await GetProductByTitleAsync(search.title);
+        var productByCategoryA = await GetProductByCategoryIdAsync(search.CategoryId);
+        var productByPriceRange = await GetProductByPriceRangeAsync(search.MinPrice, search.MaxPrice);
+
+        var intersect = await GetProductByFilterSectionAsync(productByTitle, productByCategoryA);
+
+        return await GetProductByFilterSectionAsync(intersect, productByPriceRange);
+    }
     
     public async Task<Models.Product> UpdateProductAsync(Models.Product product)
     {
@@ -64,7 +118,7 @@ public class ProductRepository : IProductRepository
         await _context.SaveChangesAsync();
         return true;
     }
-    public async Task<IEnumerable<Models.Product>> GetProductByCategoryIdAsync(int categoryId)
+    public async Task<IEnumerable<Models.Product>> GetProductByCategoryIdAsync(int? categoryId)
     {
         if (categoryId == null)
             return GetProductsAsync();
@@ -74,7 +128,7 @@ public class ProductRepository : IProductRepository
         return products;
     }
 
-    public async Task<IEnumerable<Models.Product>> GetProductByPriceRangeAsync(int startPrice, int endPrice)
+    public async Task<IEnumerable<Models.Product>> GetProductByPriceRangeAsync(int? startPrice, int? endPrice)
     {
         if (startPrice == null)
         {
@@ -99,7 +153,7 @@ public class ProductRepository : IProductRepository
         return products;
     }
 
-    public async Task<IEnumerable<Models.Product>> GetProductByFilterSectionAsynct(IEnumerable<Models.Product> categoryProducts, IEnumerable<Models.Product> priceProducts)
+    public async Task<IEnumerable<Models.Product>> GetProductByFilterSectionAsync(IEnumerable<Models.Product> categoryProducts, IEnumerable<Models.Product> priceProducts)
     {
         var filteredProducts = categoryProducts.Intersect(priceProducts, new ProductComparer());
 

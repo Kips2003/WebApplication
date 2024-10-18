@@ -128,7 +128,9 @@ public class ProductService : IProductService
             Stock = p.Stock,
             Weight = p.Weight,
             UserId = p.UserId
-        }).ToList();    }
+        }).ToList();
+        
+    }
 
     public async Task<AuthResponseDto> UpdateProductAsync(int userId, ProductDto products)
     {
@@ -166,6 +168,33 @@ public class ProductService : IProductService
         await _productRepository.UpdateProductAsync(product);
 
         return new AuthResponseDto { Success = true, Message = "Product updated successfullu" };
+    }
+
+    public async Task<IEnumerable<ProductDto>> GetProductByQueryAsync(ProductSearchDto searchDto)
+    {
+        var products = await GetProductByQueryAsync(searchDto);
+        
+        return products.Select(p => new ProductDto
+        {
+            Id = p.Id,
+            Title = p.Title,
+            Height = p.Height,
+            Width = p.Width,
+            Depth = p.Depth,
+            Description = p.Description,
+            Price = p.Price,
+            CreatedAt = p.CreatedAt,
+            UpdatedAt = p.UpdatedAt,
+            BarCode = p.BarCode,
+            QrCode = p.QrCode,
+            Images = p.Images,
+            Tags = p.Title.Split(" "),
+            Thumbnail = p.Thumbnail,
+            CategoryId = p.CategoryId,
+            Stock = p.Stock,
+            Weight = p.Weight,
+            UserId = p.UserId
+        }).ToList();
     }
 
     public async Task<AuthResponseDto> DeleteProductAsync(int id)

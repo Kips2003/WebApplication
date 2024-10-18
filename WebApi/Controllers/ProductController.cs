@@ -45,7 +45,16 @@ public class ProductController : ControllerBase
 
         return Ok(product);
     }
-    
+
+    [HttpGet("WithQuery/")]
+    public async Task<IActionResult> GetProductByQueryAsync(ProductSearchDto query)
+    {
+        var products = await _product.GetProductByQueryAsync(query);
+        if (products is null)
+            return NotFound();
+
+        return Ok(products);
+    }
     [HttpPost]
     public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDto request)
     {
