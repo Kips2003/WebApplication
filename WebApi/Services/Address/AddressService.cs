@@ -34,7 +34,7 @@ public class AddressService : IAddressService
 
     public async Task<IEnumerable<AddressDto>> GetAddressBuUserIdAsync(int userId)
     {
-        var user = _userRepository.getUserById(userId);
+        var user = await _userRepository.getUserById(userId);
         if (user is null)
             return null;
 

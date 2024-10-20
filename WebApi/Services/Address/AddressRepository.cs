@@ -20,7 +20,7 @@ public class AddressRepository : IAddressRepository
 
     public async Task<IEnumerable<Models.Address>> GetAddressesAsync()
     {
-        return _context.Addresses.ToList();
+        return await _context.Addresses.ToListAsync();
     }
     public async Task<IEnumerable<Models.Address>> GetAddressByUserIdAsync(int userId)
     {
