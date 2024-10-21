@@ -18,11 +18,11 @@ public class CartRepository : ICartRepository
             .ThenInclude(ci => ci.Product).ToListAsync();
     }
 
-    public async Task<IEnumerable<Models.Cart>> GetCartByUserIdAsync(int userId)
+    public async Task<Models.Cart> GetCartByUserIdAsync(int userId)
     {
         return await _context.Carts.Include(c => c.CartItems)
             .ThenInclude(ci => ci.Product)
-            .Where(c => c.UserId == userId).ToListAsync();
+            .FirstOrDefaultAsync(c => c.UserId == userId);
     }
 
     public async Task<Models.Cart> GetCartByIdAsync(int id)

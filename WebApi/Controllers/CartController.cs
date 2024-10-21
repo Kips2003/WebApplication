@@ -42,7 +42,7 @@ public class CartController : ControllerBase
 
         return Ok(cart);
     }
-
+    
     [HttpPost]
     public async Task<IActionResult> CreateCart(CartCreateDto cartCreate)
     {
@@ -50,6 +50,11 @@ public class CartController : ControllerBase
         return CreatedAtAction(nameof(GetCartById), new { id = cart.Id }, cart);
     }
 
+    /*[HttpPost("add-to-cart")]
+    public async Task<IActionResult> AddToCart(CartItemCreateDto cartItem)
+    {
+        
+    }*/
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCart(int id, CartCreateDto cartCreate)
     {

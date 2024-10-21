@@ -30,22 +30,22 @@ public class CartService : ICartService
         }).ToList();
     }
 
-    public async Task<IEnumerable<CartDto>> GetCartByUserIdAsync(int userid)
+    public async Task<CartDto> GetCartByUserIdAsync(int userid)
     {
         var carts = await _cart.GetCartByUserIdAsync(userid);
         
-        return carts.Select(c => new CartDto
+        return new CartDto
         {
-            Id = c.Id,
-            UserId = c.UserId,
-            CartItems = c.CartItems.Select(ci => new CartItemDto
+            Id = carts.Id,
+            UserId = carts.UserId,
+            CartItems = carts.CartItems.Select(ci => new CartItemDto
             {
                 Id = ci.Id,
                 CartId = ci.CartId,
                 ProductId = ci.ProductId,
                 Quantity = ci.Quantity
-            }).Where(u => u.CartId == c.Id).ToList()
-        }).ToList();
+            }).Where(u => u.CartId == carts.Id).ToList()
+        };
     }
 
     public async Task<CartDto> GetCartByIdAsync(int id)
@@ -70,6 +70,7 @@ public class CartService : ICartService
 
     public async Task<CartDto> CreateCartAsync(CartCreateDto cartCreateDto)
     {
+        var cartByUserId = await _cart.GetCartByUserIdAsync(cartCreateDto.UserId);
         var cart = new Models.Cart
         {
             UserId = cartCreateDto.UserId,
@@ -80,8 +81,37 @@ public class CartService : ICartService
             }).ToList()
         };
 
-        cart = await _cart.CreateCartAsync(cart);
+        if (cartByUserId is not null)
+        {
+            foreach (var cartItem in cart.CartItems)
+            {
+                var newCartITem = new CartItem();
+                foreach (var cartItemDtoUser in cartByUserId.CartItems)
+                {
+                    if (cartItem.ProductId == cartItemDtoUser.ProductId)
+                    {
+                        cartItemDtoUser.Quantity += cartItem.Quantity;
+                    }
+                    else
+                    {
+                        newCartITem = new CartItem
+                        {
+                            ProductId = cartItem.ProductId,
+                            Quantity = cartItem.Quantity,
+                            CartId = cart.Id
+                        };
+                        cartByUserId.CartItems.Add(newCartITem);
+                    }
+                }
+            }
 
+            _cart.UpdateCartAsync(cartByUserId);
+        }
+
+        if (cartByUserId is null)
+        {
+            cart = await _cart.CreateCartAsync(cart);
+        }
         return new CartDto
         {
             Id = cart.Id,
