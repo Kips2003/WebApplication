@@ -85,27 +85,29 @@ public class CartService : ICartService
         {
             foreach (var cartItem in cart.CartItems)
             {
-                var newCartITem = new CartItem();
-                foreach (var cartItemDtoUser in cartByUserId.CartItems)
+                // Check if the item already exists in the user's cart
+                var existingCartItem = cartByUserId.CartItems
+                    .FirstOrDefault(c => c.ProductId == cartItem.ProductId);
+
+                if (existingCartItem is not null)
                 {
-                    if (cartItem.ProductId == cartItemDtoUser.ProductId)
+                    // If it exists, update the quantity
+                    existingCartItem.Quantity += cartItem.Quantity;
+                }
+                else
+                {
+                    // If it doesn't exist, create a new item and add it
+                    var newCartItem = new CartItem
                     {
-                        cartItemDtoUser.Quantity += cartItem.Quantity;
-                    }
-                    else
-                    {
-                        newCartITem = new CartItem
-                        {
-                            ProductId = cartItem.ProductId,
-                            Quantity = cartItem.Quantity,
-                            CartId = cart.Id
-                        };
-                        cartByUserId.CartItems.Add(newCartITem);
-                    }
+                        ProductId = cartItem.ProductId,
+                        Quantity = cartItem.Quantity,
+                        CartId = cartByUserId.Id // Use existing cart ID
+                    };
+                    cartByUserId.CartItems.Add(newCartItem);
                 }
             }
 
-            _cart.UpdateCartAsync(cartByUserId);
+            cart = await _cart.UpdateCartAsync(cartByUserId);
         }
 
         if (cartByUserId is null)
