@@ -11,7 +11,43 @@ public class CartService : ICartService
     {
         _cart = cart;
     }
-    
+
+    public async Task<IEnumerable<CartDto>> GetCartAsync()
+    {
+        var carts = await _cart.GetCartAsync();
+
+        return carts.Select(c => new CartDto
+        {
+            Id = c.Id,
+            UserId = c.UserId,
+            CartItems = c.CartItems.Select(ci => new CartItemDto
+            {
+                Id = ci.Id,
+                CartId = ci.CartId,
+                ProductId = ci.ProductId,
+                Quantity = ci.Quantity
+            }).Where(u => u.CartId == c.Id).ToList()
+        }).ToList();
+    }
+
+    public async Task<IEnumerable<CartDto>> GetCartByUserIdAsync(int userid)
+    {
+        var carts = await _cart.GetCartByUserIdAsync(userid);
+        
+        return carts.Select(c => new CartDto
+        {
+            Id = c.Id,
+            UserId = c.UserId,
+            CartItems = c.CartItems.Select(ci => new CartItemDto
+            {
+                Id = ci.Id,
+                CartId = ci.CartId,
+                ProductId = ci.ProductId,
+                Quantity = ci.Quantity
+            }).Where(u => u.CartId == c.Id).ToList()
+        }).ToList();
+    }
+
     public async Task<CartDto> GetCartByIdAsync(int id)
     {
         var cart = await _cart.GetCartByIdAsync(id);

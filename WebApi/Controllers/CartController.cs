@@ -17,6 +17,22 @@ public class CartController : ControllerBase
         _cartService = cartService;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetCart()
+    {
+        var carts = await _cartService.GetCartAsync();
+
+        return Ok(carts);
+    }
+
+    [HttpGet("withUserId/{userId}")]
+    public async Task<IActionResult> GetCartByUserId(int userId)
+    {
+        var carts = await _cartService.GetCartByUserIdAsync(userId);
+
+        return Ok(carts);
+    }
+    
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCartById(int id)
     {

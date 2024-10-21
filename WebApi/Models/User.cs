@@ -22,7 +22,7 @@ public class User
     public string ProfilePicture { get; set; }
     public ICollection<Reviews> Reviews { get; set; }
     public ICollection<Address> Addresses { get; set; }
-    public ICollection<CartItem> CartItems { get; set; }
+    public ICollection<Cart> CartItems { get; set; }
     public ICollection<Order> Orders { get; set; }
     public ICollection<Product> Products { get; set; }
 }

@@ -11,7 +11,20 @@ public class CartRepository : ICartRepository
     {
         _context = context;
     }
-    
+
+    public async Task<IEnumerable<Models.Cart>> GetCartAsync()
+    {
+        return await _context.Carts.Include(c => c.CartItems)
+            .ThenInclude(ci => ci.Product).ToListAsync();
+    }
+
+    public async Task<IEnumerable<Models.Cart>> GetCartByUserIdAsync(int userId)
+    {
+        return await _context.Carts.Include(c => c.CartItems)
+            .ThenInclude(ci => ci.Product)
+            .Where(c => c.UserId == userId).ToListAsync();
+    }
+
     public async Task<Models.Cart> GetCartByIdAsync(int id)
     {
         return await _context.Carts.Include(c => c.CartItems)
