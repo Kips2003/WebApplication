@@ -69,9 +69,8 @@ public class AddressService : IAddressService
             State = address.State,
             PostalCode = address.PostalCode,
             Country = address.Country
-        };    }
-    
-
+        };    
+    }
 
     public async Task<AddressDto> CreateAddressByIdAsync(AddressCreateDto addressDto)
     {

@@ -21,7 +21,8 @@ public class ReviewsController : ControllerBase
 
         return Ok(reviews);
     }
-
+    
+    
     [HttpGet("{id}")]
     public async Task<IActionResult> GetReviewByIdAsync(int id)
     {
@@ -32,7 +33,7 @@ public class ReviewsController : ControllerBase
         return Ok(review);
     }
 
-    [HttpGet("{productId}")]
+    [HttpGet("product/{productId}")]
     public async Task<IActionResult> GetReviewsByProductIdAsync(int productId)
     {
         var reviews = await _reviews.GetReviewsByProductIdAsync(productId);
@@ -44,7 +45,7 @@ public class ReviewsController : ControllerBase
     public async Task<IActionResult> CreateReviewAsync(ReviewsCreateDto request)
     {
         var review = await _reviews.CreateReviewAsync(request);
-        return CreatedAtAction(nameof(GetReviewByIdAsync), new { Id = review.Id }, review);
+        return CreatedAtAction(nameof(GetReviewByIdAsync), new {id = review.Id}, review);
     }
 
     [HttpPut("{userId}")]
