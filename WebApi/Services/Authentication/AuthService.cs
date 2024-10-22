@@ -156,6 +156,31 @@ public class AuthService : IAuthService
         });    
     }
 
+    public async Task<UserDto> GetUserById(int id)
+    {
+        var user = await _userRepository.getUserById(id);
+
+        if (user is null)
+            return null;
+        
+        return new UserDto
+        {
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            UserName = user.UserName,
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
+            PasswordHash = user.PasswordHash,
+            DateOfCreate = user.CreatedAt,
+            DateOfBirth = user.BirthDate,
+            IsEmailConfirmed = user.IsEmailConfirmed,
+            EmailConfirmationToken = user.EmailConfirmationToken,
+            ProfilePicture = user.ProfilePicture,
+            PrevelageId = user.PrivilageId
+        };
+    }
+
     public async Task<User> FindByEmailConfirmationTokenAsync(string token)
     {
         return await _userRepository.FindByEmailConfirmationTokenAsync(token);

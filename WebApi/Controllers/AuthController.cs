@@ -24,6 +24,17 @@ public class AuthController : ControllerBase
         return Ok(users);
     }
 
+    [HttpGet("WithId/{id}")]
+    public async Task<IActionResult> GetUserById(int id)
+    {
+        var user = await _authService.GetUserById(id);
+
+        if (user is null)
+            return NotFound();
+
+        return Ok(user);
+    }
+
     [HttpGet("{email}")]
     public async Task<IActionResult> GetUsersByEmail(string email)
     {
